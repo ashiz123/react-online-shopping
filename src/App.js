@@ -4,13 +4,9 @@ import {Switch, Route, Link} from 'react-router-dom';
 
 import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shopPage/shopPage.component';
+import Header from './components/header/header.component';
 
 
-const HatsPage = () =>(
-  <div>
-    <h1>testing </h1>
-  </div>
-)
 
 const TopicDetail = (props) =>(
   <div>
@@ -23,6 +19,7 @@ const TopicDetail = (props) =>(
 function App() {
   return (
     <div>
+      <Header />
       <Switch>
      <Route exact path="/" component = {HomePage} />
      <Route  path="/shop" component = {ShopPage} />
