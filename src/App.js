@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
 import './App.css';
 import {Switch, Route, Link} from 'react-router-dom';
+import {connect} from 'react-redux'
 
 import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shopPage/shopPage.component';
 import Header from './components/header/header.component';
 import SignInAndSignOutPage from './pages/sign in-and-sign-up-page/sign in-and-sign-up-page.component';
 import  {auth, createUserProfileDocument} from './firebase/firebase.utils';
-
+import {setCurrentUser } from './redux/user/user.actions';
 
 // this section is not used. only to learn
 // const TopicDetail = (props) =>(
@@ -18,19 +19,19 @@ import  {auth, createUserProfileDocument} from './firebase/firebase.utils';
 //   </div>
 // )
 
+const mapDispatchToProps = dispatch => ({
+  setCurrentUser : user => dispatch(setCurrentUser(user))
+})
+
 class App extends Component {
-  constructor(props)
-  {
-    super(props)
-    this.state = {
-      currentUser: null
-    }
-  }
+
 
   unsubscribeFromAuth = null;
 
   componentDidMount()
   {
+
+    const {setCurrentUser}  = this.props;
 
    
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth =>{
@@ -41,7 +42,7 @@ class App extends Component {
         
         userRef.onSnapshot(snapShot => {
           
-          this.setState({
+          setCurrentUser({
             currentUser: {
               id: snapShot.id,
               ...snapShot.data()
@@ -52,7 +53,7 @@ class App extends Component {
         })
        
       }
-      this.setState({currentUser: userAuth});
+        setCurrentUser(userAuth);
     });
 
     
@@ -72,7 +73,7 @@ componentWillUnmount()
   render() { 
     return ( 
       <div>
-      <Header currentUser = {this.state.currentUser}/>
+      <Header/>
       <Switch>
      <Route exact path="/" component = {HomePage} />
      <Route  path="/shop" component = {ShopPage} />
@@ -84,6 +85,6 @@ componentWillUnmount()
   }
 }
  
-export default App;
+export default connect(null, mapDispatchToProps)(App);
 
 
