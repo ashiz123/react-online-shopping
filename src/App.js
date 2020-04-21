@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import './App.css';
-import {Switch, Route, Link} from 'react-router-dom';
+import {Switch, Route, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux'
 
 import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shopPage/shopPage.component';
 import Header from './components/header/header.component';
-import SignInAndSignOutPage from './pages/sign in-and-sign-up-page/sign in-and-sign-up-page.component';
+import SignInAndSignUpPage from './pages/sign in-and-sign-up-page/sign in-and-sign-up-page.component';
 import  {auth, createUserProfileDocument} from './firebase/firebase.utils';
 import {setCurrentUser } from './redux/user/user.actions';
 
@@ -21,6 +21,11 @@ import {setCurrentUser } from './redux/user/user.actions';
 
 const mapDispatchToProps = dispatch => ({
   setCurrentUser : user => dispatch(setCurrentUser(user))
+})
+
+//instead using state used {user} . use destructuring.
+const mapStateToProps = ({user}) => ({
+  currentUser : user.currentUser
 })
 
 class App extends Component {
@@ -77,7 +82,8 @@ componentWillUnmount()
       <Switch>
      <Route exact path="/" component = {HomePage} />
      <Route  path="/shop" component = {ShopPage} />
-     <Route  path="/signin" component = {SignInAndSignOutPage} />
+     {/* <Route  path="/signin" component = {SignInAndSignOutPage} /> */}
+     <Route  path="/signin" render = {() => this.props.currentUser ? (<Redirect to = '/'/>) : (<SignInAndSignUpPage/>)}/>
     
      </Switch>
     </div>
@@ -85,6 +91,6 @@ componentWillUnmount()
   }
 }
  
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
 
 
