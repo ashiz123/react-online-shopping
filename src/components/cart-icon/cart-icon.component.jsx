@@ -1,12 +1,22 @@
 import React from 'react';
 import {ReactComponent as ShoppingIcon} from '../../assets/shopping-bag.svg';
 import './cart-icon.styles.scss';
+import {connect} from 'react-redux';
+import {toggleCartHidden} from '../../redux/cart/cart.actions';
 
-const CartIcon = () => (
-    <div className="cart-icon">
+const mapDispatchToProps = (dispatch) =>({
+    toggleCartHidden : () => dispatch(toggleCartHidden())
+})
+
+
+const CartIcon = ({toggleCartHidden}) => (
+    <div className="cart-icon" onClick={toggleCartHidden} >
         <ShoppingIcon className="shopping-icon"/>
         <span className='item-count'> 0 </span>
     </div>
 )
 
-export default CartIcon;
+
+
+//here null is passed because first parameter in connect is mapStateToProps
+export default connect(null, mapDispatchToProps)(CartIcon);
