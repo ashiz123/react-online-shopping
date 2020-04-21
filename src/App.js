@@ -6,7 +6,7 @@ import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shopPage/shopPage.component';
 import Header from './components/header/header.component';
 import SignInAndSignOutPage from './pages/sign in-and-sign-up-page/sign in-and-sign-up-page.component';
-import  {auth} from './firebase/firebase.utils';
+import  {auth, createUserProfileDocument} from './firebase/firebase.utils';
 
 
 // this section is not used. only to learn
@@ -31,11 +31,31 @@ class App extends Component {
 
   componentDidMount()
   {
-    this.unsubscribeFromAuth =  auth.onAuthStateChanged(user => {
-      this.setState ({currentUser: user})
 
-      console.log(user);
-    })
+   
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth =>{
+     
+      //if user is not signing out or user not is null 
+      if(userAuth){
+        const userRef = await createUserProfileDocument(userAuth);
+        
+        userRef.onSnapshot(snapShot => {
+          
+          this.setState({
+            currentUser: {
+              id: snapShot.id,
+              ...snapShot.data()
+            }
+          });
+
+          console.log(this.state);
+        })
+       
+      }
+      this.setState({currentUser: userAuth});
+    });
+
+    
   }
 
   
