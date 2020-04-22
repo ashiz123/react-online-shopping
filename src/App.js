@@ -5,10 +5,15 @@ import {connect} from 'react-redux'
 
 import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shopPage/shopPage.component';
-import Header from './components/header/header.component';
 import SignInAndSignUpPage from './pages/sign in-and-sign-up-page/sign in-and-sign-up-page.component';
+import CheckoutPage from './pages/checkout/checkout.component';
+
+import Header from './components/header/header.component';
 import  {auth, createUserProfileDocument} from './firebase/firebase.utils';
 import {setCurrentUser } from './redux/user/user.actions';
+import {selectCurrentuser} from './redux/user/user.selector';
+import {createStructuredSelector} from 'reselect';
+
 
 // this section is not used. only to learn
 // const TopicDetail = (props) =>(
@@ -24,8 +29,8 @@ const mapDispatchToProps = dispatch => ({
 })
 
 //instead using state used {user} . use destructuring.
-const mapStateToProps = ({user}) => ({
-  currentUser : user.currentUser
+const mapStateToProps=  createStructuredSelector({
+  currentUser : selectCurrentuser
 })
 
 class App extends Component {
@@ -82,6 +87,7 @@ componentWillUnmount()
       <Switch>
      <Route exact path="/" component = {HomePage} />
      <Route  path="/shop" component = {ShopPage} />
+     <Route  exact path="/checkout" component = {CheckoutPage} />
      {/* <Route  path="/signin" component = {SignInAndSignOutPage} /> */}
      <Route  path="/signin" render = {() => this.props.currentUser ? (<Redirect to = '/'/>) : (<SignInAndSignUpPage/>)}/>
     

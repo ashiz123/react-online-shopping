@@ -6,11 +6,27 @@ import './header.styles.scss'
 import {connect} from 'react-redux';
 import CartIcon from '../cart-icon/cart-icon.component'
 import CartDropdown from '../cart-dropdown/cart-dropdown.component';
+//importing selector
+import {createStructuredSelector} from 'reselect';
+import {selectCurrentuser} from '../../redux/user/user.selector';
+import {selectCartHidden} from '../../redux/cart/cart.selectors';
 
-const mapStateToProps = ({user : {currentUser}, cart:{hidden}})  => ({
-    currentUser : currentUser,
-    hidden
-})
+
+
+
+// const mapStateToProps = (state)  => ({
+//     currentUser : selectCurrentuser(state),
+//     hidden: selectCartHidden(state)
+// })
+
+
+// if there are multiple selector( it automatic pass top level state)
+    const mapStateToProps = createStructuredSelector({
+        currentUser : selectCurrentuser,
+        hidden : selectCartHidden
+    })
+
+
 
 
 const Header = ({currentUser, hidden}) =>
