@@ -35,7 +35,7 @@ const config =
     
 
     if(!snapShot.exists){
-      console.log(userAuth);
+      
       
       //creating document . so we need to use document query refrence rather than snapshot
       
