@@ -5,6 +5,8 @@ import storage from 'redux-persist/lib/storage';  //using localstorage as dafaul
 
 import userReducer from './user/user.reducer';
 import cartReducer from './cart/cart.reducers';
+import directoryReducer from './directory/directory.reducer';
+import shopReducer from './shop/shop.reducer';
 
 
 //creaating normal object
@@ -12,7 +14,7 @@ const persistConfig = {
     key : 'root',
     storage,
     whitelist : [
-        'cart',
+        'cart'
         // 'userReducer' it is stored in database so we dont need store in local storage
     ]
 
@@ -21,7 +23,9 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
     user: userReducer,
-    cart: cartReducer
+    cart: cartReducer,
+    directory: directoryReducer,
+    shop: shopReducer
 });
 
 export default persistReducer(persistConfig, rootReducer);

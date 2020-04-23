@@ -1,30 +1,23 @@
-import React, {Component}  from 'react'
-import SHOP_DATA from './shop.data';
-import PreviewCollection from '../../components/preview-collection/preview-collection.component'
+//it is very important. This component is getting value from app.js through route. and hit the next component. So this component working as mediator for collection overview and app.js through route.
+
+
+import React  from 'react'
 import './shopPage.style.scss';
+import {Route} from 'react-router-dom';
+import CollectionOverview from '../../components/collection-overview/collection-overview.component';
 
-export default class ShopPage extends Component {
-    constructor(props)
-    {
-        super(props);
-        this.state = {
-            collections: SHOP_DATA
-        };  
-    }
+import CollectionComponent from '../collection/collection.component';
 
+const ShopPage = ({match}) => {
 
-    render() {
-        const {collections} = this.state;
-        
-        return (
+    
+    return (
             <div className ='shop-page'>
-               
-                {collections.map(({id, ...otherCollectionProps}) => (
-                     <PreviewCollection key={id} {...otherCollectionProps} />
-                 ))  
-                } 
-                
+              <Route exact path={`${match.path}`} component={CollectionOverview} />
+              <Route  path={`${match.path}/:collectionId`} component={CollectionComponent} />
             </div>
         )
     }
-}
+
+
+export default ShopPage;
